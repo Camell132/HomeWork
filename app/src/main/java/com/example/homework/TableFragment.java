@@ -1,20 +1,17 @@
 package com.example.homework;
-
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class TableFragment extends Fragment implements OnNumberClickListener {
@@ -22,9 +19,11 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
     private List<Number> numbers = new ArrayList<>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        if (savedInstanceState != null) {
+            maxNumber = savedInstanceState.getInt("MAX" ,maxNumber);
+        }
     }
 
     @Override
@@ -33,11 +32,8 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
         //Привязка фрагмента к xml разметке
         final View view = inflater.inflate(R.layout.fragment_table, container, false);
 
-        if (savedInstanceState != null) {
-            maxNumber = savedInstanceState.getInt("MAX", maxNumber);
-        }
         //создание списка
-        numbers = tableNumbers(maxNumber);
+        numbers = tableNumbers (maxNumber);
 
         final RecyclerView recyclerView = view.findViewById(R.id.list);
 
@@ -48,7 +44,7 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
 
         //Определение разметки таблицы согласно ориентации экрана
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4));
@@ -59,7 +55,7 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
             public void onClick(View v) {
                 numbers.add(new Number(++maxNumber));
                 adapter.newAddedNumber();
-                recyclerView.scrollToPosition(numbers.size() - 1);
+                recyclerView.scrollToPosition(numbers.size()-1);
 
 
             }
@@ -67,19 +63,17 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
         return view;
 
     }
-
     @Override
     public void onPause() {
         super.onPause();
     }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("MAX", maxNumber);
+        outState.putInt("MAX",maxNumber);
     }
 
-    //Создание списка чисел от 1 до 100
+//Создание списка чисел от 1 до 100
     private List<Number> tableNumbers(int amount) {
         List<Number> numbers = new ArrayList<>();
         for (int i = 1; i <= amount; i++) {
@@ -87,10 +81,9 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
         }
         return numbers;
     }
-
     @Override
     public void onNumberClick(String num, int color) {
-        ((OnNumberClickListener) Objects.requireNonNull(getActivity())).onNumberClick(num, color);
+        ((OnNumberClickListener) (requireActivity())).onNumberClick(num, color);
     }
 }
 
