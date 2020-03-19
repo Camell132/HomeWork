@@ -54,7 +54,7 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
             @Override
             public void onClick(View v) {
                 numbers.add(new Number(++maxNumber));
-                adapter.newAddedNumber();
+                adapter.newAddedNumber(numbers.size()-1);
                 recyclerView.scrollToPosition(numbers.size()-1);
 
 
