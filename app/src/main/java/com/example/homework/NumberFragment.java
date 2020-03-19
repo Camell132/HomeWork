@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment;
 public class NumberFragment extends Fragment {
     private String number;
     private int color;
-
+    private static final String KEY_NUMBER = "number";
+    private static final String KEY_COLOR = "color";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,8 +23,8 @@ public class NumberFragment extends Fragment {
         if (bundle == null) {
             return;
         }
-        this.number = bundle.getString("number");
-        this.color = bundle.getInt("color");
+        this.number = bundle.getString(KEY_NUMBER);
+        this.color = bundle.getInt(KEY_COLOR);
     }
 
     //Связь фрагмента с разметкой
@@ -45,8 +46,8 @@ public class NumberFragment extends Fragment {
     // обновление текстового поля
     void setNum(String num, int col) {
         Bundle bundle = new Bundle();
-        bundle.putString("number", num);
-        bundle.putInt("color", col);
+        bundle.putString(KEY_NUMBER, num);
+        bundle.putInt(KEY_COLOR, col);
         setArguments(bundle);
     }
 

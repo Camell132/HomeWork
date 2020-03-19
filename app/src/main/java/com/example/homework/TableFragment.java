@@ -1,5 +1,4 @@
 package com.example.homework;
-import android.content.res.Configuration;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,13 +7,13 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TableFragment extends Fragment implements OnNumberClickListener {
+    private static final String KEY_MAX = "MAX";
     private int maxNumber = 100;
     private List<Number> numbers = new ArrayList<>();
 
@@ -22,7 +21,7 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            maxNumber = savedInstanceState.getInt("MAX" ,maxNumber);
+            maxNumber = savedInstanceState.getInt(KEY_MAX ,maxNumber);
         }
     }
 
@@ -44,17 +43,12 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
 
         //Определение разметки таблицы согласно ориентации экрана
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 4));
-        }
         //Обработка нажатия на кнопку добавления чисел
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 numbers.add(new Number(++maxNumber));
-                adapter.newAddedNumber(numbers.size()-1);
+                adapter.notifyItemInserted(numbers.size()-1);
                 recyclerView.scrollToPosition(numbers.size()-1);
 
 
@@ -70,7 +64,7 @@ public class TableFragment extends Fragment implements OnNumberClickListener {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("MAX",maxNumber);
+        outState.putInt(KEY_MAX,maxNumber);
     }
 
 //Создание списка чисел от 1 до 100

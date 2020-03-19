@@ -58,9 +58,6 @@ class NumberAdapter extends RecyclerView.Adapter<NumberAdapter.ViewHolder> {
         return numbers.size();
     }
 
-    void newAddedNumber(int pos) {
-        notifyItemChanged(pos);
-    }
 }
 
 
